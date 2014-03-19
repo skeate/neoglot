@@ -1,0 +1,32 @@
+{
+  "name": "neoglot",
+  "version": "0.0.0",
+  "description": "Social Conlanging",
+  "main": "app.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skeate/neoglot"
+  },
+  "keywords": [
+    "conlangs",
+    "social",
+    "constructed",
+    "languages",
+    "glossopoeia"
+  ],
+  "author": "Jonathan Skeate",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/skeate/neoglot/issues"
+  },
+  "homepage": "https://github.com/skeate/neoglot",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-contrib-watch": "^0.6.0",
+    "grunt-emblem": "^0.1.0",
+    "jquery": "^2.1.0"
+  }
+}
