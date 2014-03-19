@@ -1,0 +1,112 @@
+@import compass/css3/transform
+@import colors
+$medium: 767px
+$large: 979px
+$xlarge: 1200px
+
+// menu fun
+$menu-unit: 50px
+=menu-item($number, $span, $background-color, $angle)
+  position: relative
+  background: $background-color
+  text-align: right
+  padding-right: 20px
+  margin-right: $number * $angle * $menu-unit
+  &:after
+    content: ''
+    font-size: 0
+    line-height: 0
+    width: 0
+    height: 0
+    border-top: 0px solid transparent
+    border-bottom: $span * $menu-unit solid transparent
+    border-right: 0 solid $background-color
+    border-left: $span * $angle * $menu-unit solid $background-color
+    position: absolute
+    top: 0px
+    left: 100%
+
+body
+  +container
+
+header
+  +span(full)
+  h1
+    height: 100px
+    background: $color
+    &:after
+      content: 'Menu \21D2'
+      display: block
+      font-family: "EB Garamond", serif
+      +rotate(90deg)
+      background: $menu-inactive
+      font-size: 20px
+      position: absolute
+      top: 0
+      right: 0
+      width: 100px
+    &.open:after
+      content: 'Menu \21D0'
+      background: $menu
+  nav
+    display: none
+    &.open
+      display: block
+    li
+      +span(full)
+      background: $menu-inactive
+      &.active, &:hover
+        background: $menu
+      a
+        display: block
+        width: 100%
+        height: 100%
+
+  +breakpoint ($medium)
+    +span(3 of 8)
+    h1
+      &:after, &.open:after
+        +rotate(0)
+        background: none
+      +menu-item(1, 2, $color, 1/5)
+    nav
+      display: block
+      li
+        float: none
+        width: auto
+        @for $i from 1 to 5
+          &:nth-child(#{$i})
+            +menu-item($i+1, 1, $menu-inactive, 1/5)
+            &.active, &:hover
+              +menu-item($i, 1, $menu, 1/5)
+  +breakpoint ($large)
+    +span(3 of 12)
+    h1
+      +menu-item(1, 2, $color, 2/5)
+    nav
+      li
+        @for $i from 1 to 5
+          &:nth-child(#{$i})
+            +menu-item($i+1, 1, $menu-inactive, 2/5)
+            &.active, &:hover
+              +menu-item($i, 1, $menu, 2/5)
+  +breakpoint($xlarge)
+    h1
+      +menu-item(1, 2, $color, 1/2)
+    nav
+      li
+        @for $i from 1 to 5
+          &:nth-child(#{$i})
+            +menu-item($i+1, 1, $menu-inactive, 1/2)
+            &.active, &:hover
+              +menu-item($i, 1, $menu, 1/2)
+
+section
+  h2
+    width: 100%
+  +span(full)
+  +breakpoint($medium)
+    +span(last 5 of 8)
+  +breakpoint($large)
+    +pre(1 of 12)
+    +span(6 of 12)

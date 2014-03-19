@@ -1,0 +1,43 @@
+// Screen
+// ======
+
+@import compass/reset
+@import breakpoint
+@import compass
+
+@import colors
+@import grids
+@import layout
+
+@import url(http://fonts.googleapis.com/css?family=Over+the+Rainbow)
+@import url(http://fonts.googleapis.com/css?family=EB+Garamond)
+
++establish-baseline()
+
+body
+  background: $background
+  font-family: 'EB Garamond', serif
+
+header
+  h1
+    font-size: 50px
+    background: $color
+    color: $background
+    font-family: 'Over the Rainbow', cursive
+    line-height: 100px
+  nav
+    li
+      a
+        color: $accent3
+        text-decoration: none
+        line-height: $menu-unit
+        font-size: 30px
+        +breakpoint($large)
+          font-size: 30px
+        font-variant: small-caps
+
+section
+  h2
+    +adjust-font-size-to(40px)
+  article
+    clear: both
