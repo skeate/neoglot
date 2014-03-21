@@ -1,41 +1,65 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>neoglot</title>
-    <link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <base href="/">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/style.css">
+    <!-- endbuild -->
   </head>
-  <body>
+  <body ng-app="neoglotApp" ng-class="{open:showMenu}">
     <header>
-      <h1>neoglot</h1>
-      <nav>
-        <div><a href="#">Menu</a></div>
+      <nav ng-controller="NavCtrl">
+        <h1 ng-class="{active:isActive('/')}"><a href="/">neoglot</a></h1>
+        <div><a href="#" ng-click="toggleMenu()">Menu</a></div>
         <ul>
-          <li class="active"><a href="#">My Languages</a></li>
-          <li><a href="#">Profile</a></li>
-          <li><a href="#">Languages</a></li>
-          <li><a href="#">People</a></li>
+          <li ng-class="{active:isActive('/my/languages')}"><a ng-href="/my/languages">My Languages</a></li>
+          <li ng-class="{active:isActive('/my/profile')}"><a ng-href="/my/profile">Profile</a></li>
+          <li ng-class="{active:isActive('/all/languages')}"><a href="/all/languages">Languages</a></li>
+          <li ng-class="{active:isActive('/all/people')}"><a href="/all/people">People</a></li>
         </ul>
       </nav>
     </header>
-    <section>
-      <header>
-        <h2>
-          Esperanto
-        </h2>
-      </header>
-      <article>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis dapibus libero. Donec nec euismod tellus, quis luctus tellus. Duis vel molestie sapien. Nulla id velit dictum, facilisis odio sed, venenatis tortor. Pellentesque malesuada interdum ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce hendrerit, leo vel iaculis placerat, nibh augue dictum metus, ut pellentesque mi purus eu velit.</p>
-        <p>Etiam libero mi, ultrices a eros sed, vestibulum interdum libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse varius augue arcu, quis porttitor orci lobortis quis. Aenean eget lacinia augue. Integer volutpat dapibus interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse blandit ipsum ipsum, eget ullamcorper lacus vulputate eu.</p>
-        <p>Mauris luctus erat eu nisl eleifend, vel tempus arcu tempor. Ut at velit ut eros congue aliquam quis at ante. Donec pellentesque, justo eu varius scelerisque, diam dolor suscipit justo, eget fringilla enim turpis eget enim. Phasellus ut commodo mauris, et feugiat lectus. Donec ut diam ut neque adipiscing ornare. Nam faucibus blandit blandit. Phasellus placerat sit amet lorem quis vulputate. Mauris eleifend magna non est scelerisque vehicula.</p>
-        <p>Vestibulum faucibus suscipit massa. Vestibulum tempor condimentum volutpat. Nam fermentum tincidunt fermentum. Curabitur at viverra lorem. Proin eget tellus id nisl fringilla sollicitudin. Sed volutpat malesuada sodales. Fusce eleifend arcu in libero dignissim, vitae gravida velit auctor. Maecenas malesuada placerat dapibus. Duis in lacus et nisi gravida pretium.</p>
-        <p>Aenean id aliquam nulla. Integer scelerisque suscipit convallis. Duis at neque nisl. Fusce sit amet sem non lorem consequat iaculis sit amet molestie ante. Suspendisse potenti. Quisque pretium id nibh sed sagittis. Donec est diam, bibendum viverra molestie lobortis, vehicula sed nisi. Praesent est ante, luctus vel convallis at, sagittis sit amet urna. Aenean ac libero iaculis, mattis magna quis, porttitor turpis. Quisque at aliquam augue. Sed vulputate enim ut dolor interdum, dictum faucibus velit viverra.</p>
-      </article>
+    <section ng-view>
+      <!--
+         -<header>
+         -  <h2>
+         -    Esperanto
+         -  </h2>
+         -</header>
+         -<article>
+         -  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis dapibus libero. Donec nec euismod tellus, quis luctus tellus. Duis vel molestie sapien. Nulla id velit dictum, facilisis odio sed, venenatis tortor. Pellentesque malesuada interdum ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce hendrerit, leo vel iaculis placerat, nibh augue dictum metus, ut pellentesque mi purus eu velit.</p>
+         -  <p>Etiam libero mi, ultrices a eros sed, vestibulum interdum libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse varius augue arcu, quis porttitor orci lobortis quis. Aenean eget lacinia augue. Integer volutpat dapibus interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse blandit ipsum ipsum, eget ullamcorper lacus vulputate eu.</p>
+         -  <p>Mauris luctus erat eu nisl eleifend, vel tempus arcu tempor. Ut at velit ut eros congue aliquam quis at ante. Donec pellentesque, justo eu varius scelerisque, diam dolor suscipit justo, eget fringilla enim turpis eget enim. Phasellus ut commodo mauris, et feugiat lectus. Donec ut diam ut neque adipiscing ornare. Nam faucibus blandit blandit. Phasellus placerat sit amet lorem quis vulputate. Mauris eleifend magna non est scelerisque vehicula.</p>
+         -  <p>Vestibulum faucibus suscipit massa. Vestibulum tempor condimentum volutpat. Nam fermentum tincidunt fermentum. Curabitur at viverra lorem. Proin eget tellus id nisl fringilla sollicitudin. Sed volutpat malesuada sodales. Fusce eleifend arcu in libero dignissim, vitae gravida velit auctor. Maecenas malesuada placerat dapibus. Duis in lacus et nisi gravida pretium.</p>
+         -  <p>Aenean id aliquam nulla. Integer scelerisque suscipit convallis. Duis at neque nisl. Fusce sit amet sem non lorem consequat iaculis sit amet molestie ante. Suspendisse potenti. Quisque pretium id nibh sed sagittis. Donec est diam, bibendum viverra molestie lobortis, vehicula sed nisi. Praesent est ante, luctus vel convallis at, sagittis sit amet urna. Aenean ac libero iaculis, mattis magna quis, porttitor turpis. Quisque at aliquam augue. Sed vulputate enim ut dolor interdum, dictum faucibus velit viverra.</p>
+         -</article>
+         -->
     </section>
     <footer>
     </footer>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="js/test.js"></script>
+
+    <!-- Libraries -->
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    
+
+    <!-- build:js scripts/modules.js -->
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/nav.js"></script>
+    <!-- endbuild -->
   </body>
 </html>

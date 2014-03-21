@@ -1,4 +1,6 @@
 .sass-cache/
 **/node_modules/
-app/js/vendor
+app/bower_components/
 app/stylesheets/
+.tmp/
+dist/

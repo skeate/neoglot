@@ -83,6 +83,8 @@ header
       float: none
       display: block
       +menu-item(1, 2, $color, 1/5)
+      &.active
+        +menu-item(0, 2, $color, 1/5)
     nav, nav.open
       clear: both
       >div
@@ -92,6 +94,7 @@ header
         display: block
         float: none
         width: auto
+        transition: all
         @for $i from 1 to 5
           &:nth-child(#{$i})
             +menu-item($i+1, 1, $menu-inactive, 1/5)
@@ -101,6 +104,8 @@ header
     +span(3)
     h1
       +menu-item(1, 2, $color, 2/5)
+      &.active
+        +menu-item(0, 2, $color, 2/5)
     nav, nav.open
       li
         @for $i from 1 to 5
@@ -111,6 +116,8 @@ header
   +susy-breakpoint($xlarge, 12)
     h1
       +menu-item(1, 2, $color, 1/2)
+      &.active
+        +menu-item(0, 2, $color, 1/2)
     nav, nav.open
       li
         @for $i from 1 to 5
