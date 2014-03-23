@@ -7,20 +7,29 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'app/bower_components/angular/angular.js',
-  'app/bower_components/angular-mocks/angular-mocks.js',
-  'app/scripts/*.js',
-  'app/scripts/**/*.js',
-  'test/mock/**/*.js',
-  'test/spec/**/*.js'
+  'public/bower_components/angular/angular.js',
+  'public/bower_components/angular-mocks/angular-mocks.js',
+  'public/scripts/**/*.js',
+  '.tmp/scripts/**/*.js',
+  'test/mock/**/*.coffee',
+  'test/spec/**/*.coffee',
+  'test/e2e/**/*.coffee'
 ];
+
+preprocessors = {
+  'test/mock/**/*.coffee': 'coffee',
+  'test/spec/**/*.coffee': 'coffee',
+  'test/e2e/**/*.coffee': 'coffee',
+  '.tmp/scripts/**/*.js': 'coverage',
+  'public/scripts/**/*.js': 'coverage'
+}
 
 // list of files to exclude
 exclude = [];
 
 // test results reporter to use
 // possible values: dots || progress || growl
-reporters = ['progress'];
+reporters = ['progress', 'coverage'];
 
 // web server port
 port = 8080;
@@ -36,7 +45,7 @@ colors = true;
 logLevel = LOG_INFO;
 
 // enable / disable watching file and executing tests whenever any file changes
-autoWatch = false;
+autoWatch = true;
 
 // Start these browsers, currently available:
 // - Chrome

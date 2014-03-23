@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 
   // configurable paths
   var yeomanConfig = {
-    app: 'app',
+    app: 'public',
     dist: 'dist'
   };
 
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
     yeoman: yeomanConfig,
     watch: {
       coffee: {
-        files: ['<%= yeoman.app %>/scripts/**/*.coffee'],
+        files: ['<%= yeoman.app %>/app/**/*.coffee'],
         tasks: ['coffee:dist']
       },
       coffeeTest: {
@@ -39,7 +39,7 @@ module.exports = function (grunt) {
         tasks: ['coffee:test']
       },
       compass: {
-        files: ['<%= yeoman.app %>/sass/**/*.{sass,scss}'],
+        files: ['<%= yeoman.app %>/**/*.{sass,scss}'],
         tasks: ['compass:dist']
       },
       livereload: {
@@ -49,7 +49,7 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
           '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
+          '{.tmp,<%= yeoman.app %>}/app/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -63,7 +63,7 @@ module.exports = function (grunt) {
         options: {
           livereload: true,
           server: path.resolve('app.js'),
-          bases: [path.resolve('./.tmp'), path.resolve(__dirname, yeomanConfig.app)]
+          bases: [path.resolve('./.tmp'), path.resolve(__dirname, yeomanConfig.app), path.resolve(__dirname, 'test')]
         }
       },
       test: {
@@ -119,9 +119,9 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.app %>/scripts',
+          cwd: '<%= yeoman.app %>/app',
           src: '{,*/}*.coffee',
-          dest: '.tmp/scripts',
+          dest: '.tmp/app',
           ext: '.js'
         }]
       },
@@ -253,7 +253,7 @@ module.exports = function (grunt) {
     karma: {
       unit: {
         configFile: 'karma.conf.js',
-        singleRun: true
+        background: true
       }
     },
     cdnify: {
@@ -292,6 +292,7 @@ module.exports = function (grunt) {
       'concurrent:server',
       'express:livereload',
       'open',
+      'karma',
       'watch'
     ]);
   });

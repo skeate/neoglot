@@ -1,0 +1,18 @@
+@import colors
+$medium: 767px
+$large: 979px
+$xlarge: 1200px
+
+
+body
+  +container
+
+section
+  h2
+    width: 100%
+  +span(full inside)
+  +breakpoint($medium)
+    +span(last 5 of 8)
+  +breakpoint($large)
+    +pre(1 of 12)
+    +span(6 of 12)

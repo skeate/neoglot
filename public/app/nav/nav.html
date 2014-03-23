@@ -1,0 +1,11 @@
+<h1 ng-class="{active:isActive('/')}">
+  <a href="#/">neoglot</a>
+  <span>beta</span>
+</h1>
+<div ng-click="toggleMenu()"><a>Menu</a></div>
+<ul>
+  <li ng-class="{active:isActive('/my/languages')}"><a ng-href="#/my/languages">My Languages</a></li>
+  <li ng-class="{active:isActive('/my/profile')}"><a ng-href="#/my/profile">Profile</a></li>
+  <li ng-class="{active:isActive('/languages')}"><a href="#/languages">Languages</a></li>
+  <li ng-class="{active:isActive('/people')}"><a href="#/people">People</a></li>
+</ul>

@@ -1,4 +1,4 @@
-#'use strict'
+'use strict'
 
 angular.module 'neoglotApp'
   .controller 'MainCtrl', ($scope, $location) ->
@@ -6,6 +6,7 @@ angular.module 'neoglotApp'
       'HTML5 Boilerplate'
       'AngularJS'
       'Karma'
+      'test'
     ]
     $scope.isActive = (route) ->
       route == $location.path()

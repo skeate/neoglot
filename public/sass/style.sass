@@ -8,37 +8,34 @@
 @import colors
 @import grids
 @import layout
+@import nav
 
 @import url(http://fonts.googleapis.com/css?family=Over+the+Rainbow)
 @import url(http://fonts.googleapis.com/css?family=EB+Garamond)
 
+$base-font-size: 16px
+$base-line-height: 24px
 +establish-baseline()
 
 body
   background: $background
   font-family: 'EB Garamond', serif
 
-header
-  h1, h1 a
-    font-size: 49px
-    background: $color
-    color: $background
-    text-decoration: none
-    font-family: 'Over the Rainbow', cursive
-    line-height: 100px
-  nav
-    li
-      a
-        color: $accent3
-        text-decoration: none
-        line-height: $menu-unit
-        font-size: 25px
-        +breakpoint($xlarge)
-          font-size: 30px
-        font-variant: small-caps
-
 section
   h2
     +adjust-font-size-to(40px)
+    font-family: 'Over the Rainbow', cursive
+  h3
+    +adjust-font-size-to(30px)
+    font-family: 'Over the Rainbow', cursive
   article
     clear: both
+    padding: 1em
+    background: lighten($background, 5%)
+    box-shadow: 0 0 1em lighten($background, 5%)
+    ul li
+      text-indent: 2em
+      list-style-position: inside
+      list-style-type: disc
+    p
+      +leader
