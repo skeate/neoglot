@@ -35,12 +35,16 @@ module.exports = function (grunt) {
         tasks: ['coffee:dist']
       },
       coffeeTest: {
-        files: ['test/spec/**/*.coffee'],
+        files: ['test/**/*.coffee'],
         tasks: ['coffee:test']
       },
       compass: {
         files: ['<%= yeoman.app %>/**/*.{sass,scss}'],
         tasks: ['compass:dist']
+      },
+      test: {
+        files: ['public/app/**/*.coffee', 'test/**/*.coffee', 'test/mocha.html'],
+        tasks: ['includeSource']
       },
       livereload: {
         options: {
@@ -63,7 +67,11 @@ module.exports = function (grunt) {
         options: {
           livereload: true,
           server: path.resolve('app.js'),
-          bases: [path.resolve('./.tmp'), path.resolve(__dirname, yeomanConfig.app), path.resolve(__dirname, 'test')]
+          bases: [
+            path.resolve('./.tmp'),
+            path.resolve(__dirname, yeomanConfig.app),
+            path.resolve(__dirname, 'test')
+          ]
         }
       },
       test: {
@@ -82,6 +90,9 @@ module.exports = function (grunt) {
     open: {
       server: {
         url: 'http://localhost:<%= express.options.port %>'
+      },
+      test: {
+        url: 'http://localhost:<%= express.options.port %>/mocha.html'
       }
     },
     clean: {
@@ -96,6 +107,13 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp'
+    },
+    includeSource: {
+      test: {
+        files: {
+          '.tmp/mocha.html': 'test/mocha.html'
+        }
+      }
     },
     jshint: {
       options: {
@@ -128,9 +146,9 @@ module.exports = function (grunt) {
       test: {
         files: [{
           expand: true,
-          cwd: 'test/spec',
-          src: '{,*/}*.coffee',
-          dest: '.tmp/spec',
+          cwd: 'test/',
+          src: '**/*.coffee',
+          dest: '.tmp/test',
           ext: '.js'
         }]
       }
@@ -236,8 +254,8 @@ module.exports = function (grunt) {
     },
     concurrent: {
       server: [
-        'coffee:dist',
-        'compass:dist'
+        'coffee',
+        'compass'
       ],
       test: [
         'coffee',
@@ -252,8 +270,10 @@ module.exports = function (grunt) {
     },
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
-        background: true
+        configFile: 'karma.conf.coffee',
+      },
+      e2e: {
+        configFile: 'karma-e2e-.conf.coffee'
       }
     },
     cdnify: {
@@ -290,9 +310,9 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'concurrent:server',
+      'includeSource',
       'express:livereload',
       'open',
-      'karma',
       'watch'
     ]);
   });
