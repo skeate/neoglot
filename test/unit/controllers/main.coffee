@@ -1,6 +1,6 @@
 'use strict'
 
-describe 'Controller: MainCtrl', ->
+describe 'Controller: Main', ->
 
   scope = {}
 

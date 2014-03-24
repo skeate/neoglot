@@ -6,8 +6,7 @@
   <script src="bower_components/jquery/jquery.js"></script>
   <script src="bower_components/mocha/mocha.js"></script>
   <script src="bower_components/chai/chai.js"></script>
-  <script src="blanket_mocha.js"
-  data-cover-only="app/" data-cover-flags="debug"></script>
+  <script src="blanket_mocha.js"></script>
   <script>
     var should = chai.should();
     mocha.ui('bdd');
@@ -16,10 +15,14 @@
   <!-- load angular libs -->
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
+  <!--<script src="bower_components/angular-scenario/angular-scenario.js"></script>-->
   <script src="bower_components/angular-mocks/angular-mocks.js"></script>
 
-  <!-- load compiled app and test code -->
-  <!-- include: "type": "js", "basePath": ".tmp", "files": "**/*.js" -->
+  <!-- load compiled app code -->
+  <script src="app/app.js"></script>
+  <!-- include: "type": "jsCov", "basePath": ".tmp/app", "baseUrl": "app/", "files": "*/**/*.js" -->
+  <!-- load compiled test code -->
+  <!-- include: "type": "js", "basePath": ".tmp/test/unit", "baseUrl": "test/unit/", "files": "**/*.js" -->
 </head>
 <body>
   <div id="mocha"></div>

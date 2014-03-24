@@ -8,5 +8,3 @@ angular.module 'neoglotApp'
       'Karma'
       'test'
     ]
-    $scope.isActive = (route) ->
-      route == $location.path()

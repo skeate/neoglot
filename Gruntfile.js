@@ -43,7 +43,7 @@ module.exports = function (grunt) {
         tasks: ['compass:dist']
       },
       test: {
-        files: ['public/app/**/*.coffee', 'test/**/*.coffee', 'test/mocha.html'],
+        files: ['public/app/**/*.coffee', 'test/**/*.coffee', 'test/*.html'],
         tasks: ['includeSource']
       },
       livereload: {
@@ -92,7 +92,7 @@ module.exports = function (grunt) {
         url: 'http://localhost:<%= express.options.port %>'
       },
       test: {
-        url: 'http://localhost:<%= express.options.port %>/mocha.html'
+        url: 'http://localhost:<%= express.options.port %>/all_tests.html'
       }
     },
     clean: {
@@ -109,10 +109,17 @@ module.exports = function (grunt) {
       server: '.tmp'
     },
     includeSource: {
+      options: {
+        templates: {
+          html: {
+            jsCov: '<script type="text/javascript" src="{filePath}" data-cover></script>'
+          }
+        }
+      },
       test: {
         files: {
-          '.tmp/mocha.html': 'test/mocha.html'
-        }
+          '.tmp/unit.html': 'test/unit.html'
+        },
       }
     },
     jshint: {
