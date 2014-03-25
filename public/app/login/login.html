@@ -1,14 +1,17 @@
-<article>
+<article ng-controller="LoginCtrl">
   <h3>Login Required</h3>
 
-  <form>
+  <div class="loginError">
+    {{loginError}}
+  </div>
+  <form ng-submit="login()">
     <p>
       <span>Email:</span>
-      <input type="text">
+      <input type="text" ng-model="user.username">
     </p>
     <p>
       Password:
-      <input type="password">
+      <input type="password" ng-model="user.password">
     </p>
     <input type="submit" value="Login">
   </form>
@@ -17,10 +20,14 @@
 
   <h3>Register</h3>
 
-  <form>
-    <p>Email: <input type="text"></p>
-    <p>Password: <input type="password"></p>
-    <p>Confirm Password: <input type="password"></p>
+  <div class="registrationError">
+    {{regError}}
+  </div>
+  <form ng-submit="register()">
+    <p>Email: <input type="text" ng-model="newuser.email"></p>
+    <p>Username: <input type="text" ng-model="newuser.username"></p>
+    <p>Password: <input type="password" ng-model="newuser.password"></p>
+    <p>Confirm Password: <input type="password" ng-model="newuser.passwordConfirm"></p>
     <input type="submit" value="Register">
   </form>
 </article>

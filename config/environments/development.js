@@ -1,7 +1,11 @@
 var express = require('express'),
-    path = require('path');
+    path = require('path'),
+    mongoose = require('mongoose');
 
-module.exports = function (app) {
+
+mongoose.connect('mongodb://localhost/neoglot');
+
+module.exports = function (app, passport) {
     app.configure('development', function () {
         app.use(function staticsPlaceholder(req, res, next) {
             return next();
@@ -17,6 +21,8 @@ module.exports = function (app) {
         app.use(express.methodOverride());
         app.use(express.cookieParser('your secret here'));
         app.use(express.session());
+        app.use(passport.initialize());
+        app.use(passport.session());
 
         app.use(function middlewarePlaceholder(req, res, next) {
           return next();

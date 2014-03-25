@@ -1,8 +1,8 @@
 'use strict'
 
-checkLoggedin = ($q, $timeout, $http, $location, $rootScope) ->
+checkLoggedin = ($q, $timeout, $http, $location, $rootScope, $route) ->
   deferred = $q.defer()
-
+  $rootScope.redirectTo = $route.current.originalPath
   $http.get '/loggedin'
     .success (user) ->
       if user != 'false'
@@ -14,16 +14,20 @@ checkLoggedin = ($q, $timeout, $http, $location, $rootScope) ->
           0
         $location.url '/login'
 
+logout = ($q, $timeout) ->
+  deferred = $q.defer()
+  $http.post '/logout'
+    .success ->
+      $timeout deferred.resolve, 0
+
 app = angular.module 'neoglotApp', ['ngRoute']
   .config ($routeProvider, $locationProvider, $httpProvider) ->
-    $httpProvider.responseInterceptors.push ($q, $location) ->
-      (promise) ->
-        promise.then \
-          (res) -> res, # success
-          (res) ->      # failure
-            if res.status == 401
-              $location.url '/login'
-            $q.reject res
+    $httpProvider.interceptors.push ($q, $location) ->
+      response: (res) -> res
+      responseError: (rejection) ->
+        if res.status == 401
+          $location.url '/login'
+        $q.reject res
     $routeProvider
       .when '/',
         templateUrl: 'app/main/main.html'
@@ -36,6 +40,8 @@ app = angular.module 'neoglotApp', ['ngRoute']
       .when '/my/profile',
         templateUrl: 'app/profile/my-profile.html'
         controller: 'ProfileCtrl'
+        resolve:
+          loggedIn: checkLoggedin
       .when '/languages',
         templateUrl: 'app/languages/languages.html'
         controller: 'MainCtrl'
@@ -45,6 +51,9 @@ app = angular.module 'neoglotApp', ['ngRoute']
       .when '/login',
         templateUrl: 'app/login/login.html'
         controller: 'LoginCtrl'
+      .when 'logout',
+        resolve:
+          logout: logout
       .otherwise
         redirectTo: '/'
 

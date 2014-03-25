@@ -319,7 +319,6 @@ module.exports = function (grunt) {
       'concurrent:server',
       'includeSource',
       'express:livereload',
-      'open',
       'watch'
     ]);
   });
