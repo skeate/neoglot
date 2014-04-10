@@ -1,60 +1,47 @@
 mongoose = require 'mongoose'
 Schema = mongoose.Schema
-crypto = require 'crypto'
+bcrypt = require 'bcrypt-nodejs'
+uniqueValidator = require 'mongoose-unique-validator'
 
 UserSchema = new Schema
-  username:
-    type: String
-    default: ''
   email:
     type: String
     default: ''
+    unique: true
   hashed_password:
     type: String
     default: ''
-  salt:
+  display:
     type: String
     default: ''
-  display_name:
-    type: String
-    default: ''
+    unique: true
 
-# commented out because whatever runs this doesn't understand latest CS syntax
+UserSchema.plugin uniqueValidator,
+  message: '{PATH} already in use.'
+
 UserSchema.virtual('password')
   .set (password) ->
     @_password = password
-    @salt = @makeSalt()
     @hashed_password = @encryptPassword password
   .get -> @_password
 
-#`
-#UserSchema.virtual('password').set(function(password) {
-  #this._password = password;
-  #this.salt = this.makeSalt();
-  #return this.hashed_password = this.encryptPassword(password);
-#}).get(function() {
-  #return this._password;
-#});
-#`
+UserSchema.path('display')
+  .validate \
+    (value) ->
+      value.length >= 3
+    , 'Display name (at least 3 letters) required'
 
-UserSchema.virtual('name')
-  .get ->
-    if @display_name.length > 0
-      @display_name
-    else
-      @username
-
-UserSchema.path('username')
+UserSchema.path('hashed_password')
   .validate \
     (value) ->
       value.length
-    , 'Username required'
+    , 'Password required.'
 
 UserSchema.path('email')
   .validate \
     (value) ->
-      value.length
-    , 'Email required'
+      value.length and /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test value
+    , 'Valid email required'
 
 UserSchema.pre 'save', (next) ->
   if @password and @password.length
@@ -64,13 +51,10 @@ UserSchema.pre 'save', (next) ->
 
 UserSchema.methods =
   authenticate: (plainText) ->
-    @hashed_password == @encryptPassword plainText
-  makeSalt: -> '' + Math.round new Date().valueOf() * Math.random()
+    bcrypt.compareSync plainText, @hashed_password
   encryptPassword: (password) ->
     if !password
       return ''
-    crypto.createHmac('sha1', @salt)
-      .update(password)
-      .digest 'hex'
+    bcrypt.hashSync password
 
 mongoose.model 'User', UserSchema

@@ -10,13 +10,15 @@ module.exports = (passport) ->
     User.findOne _id: id, (err, user) ->
       done err, user
 
-  passport.use new LocalStrategy (username, password, done) ->
-    User.findOne username: username, (err, user) ->
-      if err
-        done err
-      else if !user
-        done null, false, message: 'Unknown user'
-      else if !user.authenticate password
-        done null, false, message: 'Invalid password'
-      else
-        done null, user
+  passport.use new LocalStrategy \
+    usernameField: 'email'
+    , (username, password, done) ->
+      User.findOne email: username, (err, user) ->
+        if err
+          done err
+        else if !user
+          done null, false, error: 'Unknown user'
+        else if !user.authenticate password
+          done null, false, error: 'Invalid password'
+        else
+          done null, user

@@ -10,3 +10,6 @@ describe 'Neoglot', ->
       element("nav li:nth-child(3) a").click()
       expect(element("nav li:nth-child(3)").attr('class')).toMatch 'active'
       expect(element("nav h1").attr('class')).not().toMatch 'active'
+    it 'should go to login when going to My Languages without logging in', ->
+      element("nav li:nth-child(1) a").click()
+      expect(browser().location().path()).toBe '/login'

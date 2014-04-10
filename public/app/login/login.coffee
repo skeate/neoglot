@@ -9,17 +9,20 @@ angular.module 'neoglotApp'
           if not $scope.redirectTo?
             $scope.redirectTo = '/'
           $location.url $scope.redirectTo
-        .error ->
-          debugger
+        .error (data, status, headers, config) ->
+          $scope.loginError = data.error
     $scope.register = ->
-      if $scope.newuser.password == $scope.newuser.passwordConfirm
+      if !$scope.newuser
+        $scope.regErrors = ["No information entered."]
+      else if $scope.newuser.password != $scope.newuser.passwordConfirm
+        $scope.regErrors = ["Passwords do not match."]
+      else
         $http.post '/register', $scope.newuser
           .success ->
             if not $scope.redirectTo?
               $scope.redirectTo = '/'
             $location.url $scope.redirectTo
-          .error ->
-            debugger
-      else
-        $scope.regError = "Passwords do not match."
-
+          .error (data) ->
+            $scope.regErrors = []
+            for field, error of data.error.errors
+              $scope.regErrors.push error.message

@@ -2,8 +2,6 @@ users = require '../app/controllers/users'
 
 module.exports = (app, passport) ->
 
-  app.use passport.initialize()
-  app.use passport.session()
 
   auth = (req, res, next) ->
     if !req.isAuthenticated()
@@ -13,8 +11,15 @@ module.exports = (app, passport) ->
 
   app.get '/loggedin', (req, res) ->
     res.send if req.isAuthenticated() then req.user else false
-  app.post '/login', passport.authenticate('local'), (req, res) ->
-    res.send req.user
+  app.post '/login', (req, res, next) ->
+    plocal = passport.authenticate 'local', (err, user, info) ->
+      if err then next err
+      else if !user then res.send 401, info
+      else
+        req.logIn user, (err) ->
+          if err then next err
+          else res.send req.user
+    plocal req, res, next
   app.post '/register', users.create
   app.post '/logout', (req, res) ->
     req.logOut()

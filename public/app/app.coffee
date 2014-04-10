@@ -24,7 +24,7 @@ app = angular.module 'neoglotApp', ['ngRoute']
   .config ($routeProvider, $locationProvider, $httpProvider) ->
     $httpProvider.interceptors.push ($q, $location) ->
       response: (res) -> res
-      responseError: (rejection) ->
+      responseError: (res) ->
         if res.status == 401
           $location.url '/login'
         $q.reject res

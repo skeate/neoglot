@@ -14,7 +14,8 @@
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "mongoose": "^3.8.8",
-    "express-jwt": "^0.2.0"
+    "mongoose-unique-validator": "^0.3.0",
+    "bcrypt-nodejs": "0.0.3"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
