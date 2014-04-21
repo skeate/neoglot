@@ -1,8 +1,17 @@
 'use strict'
 
 describe 'Neoglot', ->
+  httpBackend = null
+  #beforeEach inject ($rootScope, $controller, $httpBackend, $http) ->
+    #loggedIn = false
+    #scope = $rootScope.$new()
+    #httpBackend = $httpBackend
+    #httpBackend.when 'GET', '/loggedin'
+      #.respond loggedIn
+    #httpBackend.when 'POST', '/login'
+      #.respond
   describe 'Nav view', ->
-    beforeEach ->
+    beforeEach inject ($rootScope, $controller, $httpBackend, $http) ->
       browser().navigateTo '/'
     it 'should have the title as active at first', ->
       expect(element("nav h1").attr('class')).toMatch 'active'

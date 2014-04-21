@@ -1,26 +1,30 @@
 'use strict'
 
-checkLoggedin = ($q, $timeout, $http, $location, $rootScope, $route) ->
-  deferred = $q.defer()
-  $rootScope.redirectTo = $route.current.originalPath
-  $http.get '/loggedin'
-    .success (user) ->
-      if user != 'false'
-        $timeout deferred.resolve, 0
-      else
-        $rootScope.message = 'You need to log in.'
-        $timeout \
-          -> deferred.reject(),
-          0
-        $location.url '/login'
+angular.module 'neoglotApp', [
+    'ngResource'
+    'ngRoute'
+    'chieffancypants.loadingBar'
+  ]
+  .service 'AuthService', ($q, $timeout, $http, $location, $rootScope) ->
+    checkLoggedIn: ->
+      deferred = $q.defer()
+      $rootScope.redirectTo = $location.path()
+      $http.get '/loggedin'
+        .success (user) ->
+          if user != 'false'
+            $timeout deferred.resolve, 0
+          else
+            $rootScope.message = 'You need to log in.'
+            $timeout \
+              -> deferred.reject(),
+              0
+            $location.url '/login'
+    logout: ->
+      deferred = $q.defer()
+      $http.post '/logout'
+        .success ->
+          $timeout deferred.resolve, 0
 
-logout = ($q, $timeout) ->
-  deferred = $q.defer()
-  $http.post '/logout'
-    .success ->
-      $timeout deferred.resolve, 0
-
-app = angular.module 'neoglotApp', ['ngRoute']
   .config ($routeProvider, $locationProvider, $httpProvider) ->
     $httpProvider.interceptors.push ($q, $location) ->
       response: (res) -> res
@@ -32,19 +36,11 @@ app = angular.module 'neoglotApp', ['ngRoute']
       .when '/',
         templateUrl: 'app/main/main.html'
         controller: 'MainCtrl'
-      .when '/my/languages',
-        templateUrl: 'app/my-languages/my-languages.html'
-        controller: 'MyLanguageCtrl'
-        resolve:
-          loggedIn: checkLoggedin
       .when '/my/profile',
         templateUrl: 'app/profile/my-profile.html'
         controller: 'ProfileCtrl'
         resolve:
-          loggedIn: checkLoggedin
-      .when '/languages',
-        templateUrl: 'app/languages/languages.html'
-        controller: 'MainCtrl'
+          loggedIn: (AuthService) -> AuthService.checkLoggedIn()
       .when '/people',
         templateUrl: 'app/people/people.html'
         controller: 'PeopleCtrl'
@@ -53,8 +49,8 @@ app = angular.module 'neoglotApp', ['ngRoute']
         controller: 'LoginCtrl'
       .when 'logout',
         resolve:
-          logout: logout
+          logout: (AuthService) -> AuthService.logout()
       .otherwise
-        redirectTo: '/'
+        templateUrl: 'app/404/404.html'
 
     #$locationProvider.html5Mode true

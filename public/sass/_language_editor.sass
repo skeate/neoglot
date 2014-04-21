@@ -1,0 +1,39 @@
+@import compass/css3/transform
+@import colors
+
+#language-editor
+  div
+    width: 100%
+  h3 + div
+    margin-bottom: 1em
+  form > div > ul
+    li
+      position: relative
+      top: 1px
+      //z-index: 2
+      display: inline-block
+      border: solid $color
+      //border-width: 1px 1px 0 1px
+      border-width: 1px
+      padding-bottom: 1px
+      text-align: center
+      text-indent: 0
+      width: 10em
+      background: $background
+      &.selected
+        border-bottom-color: lighten($background, 5%)
+        background: lighten($background, 5%)
+      a
+        color: black
+        text-decoration: none
+        font-variant: small-caps
+        +adjust-font-size-to(14pt)
+        display: block
+        width: 100%
+  form > div > div
+    border: 1px solid $color
+    display: none
+    padding: .5em
+    //z-index: 1
+  form > div > ul + div
+    display: block

@@ -1,0 +1,30 @@
+<article id="language-editor">
+  <form>
+    <h3>{{language.name}}</h3>
+    <div>
+      <a ng-href="#/languages/{{language.creator}}/{{language.url}}">View language page</a>
+    </div>
+    <div>
+      <ul id="language-editor-tabs">
+        <li class="selected"><a href="#details">Details</a></li>
+        <li><a href="#lexicon">Lexicon</a></li>
+        <li><a href="#pages">Pages</a></li>
+      </ul>
+      <div id="details">
+        <p>
+          Description
+          <div>
+            <textarea ng-model="language.description"></textarea>
+          </div>
+        </p>
+      </div>
+      <div id="lexicon">
+        lexicon editor
+      </div>
+      <div id="pages">
+        markdown page list
+      </div>
+      <button ng-click="save()">Save</button>
+    </div>
+  </form>
+</article>

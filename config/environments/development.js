@@ -15,6 +15,7 @@ module.exports = function (app, passport) {
         app.set('views', path.join(app.directory, '/app'));
         app.engine('html', require('ejs').renderFile);
         app.set('view engine', 'html');
+        app.set('git base', 'A:\\neoglot_testing\\');
         app.use(express.favicon());
         app.use(express.logger('dev'));
         app.use(express.bodyParser());
