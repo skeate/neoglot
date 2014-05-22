@@ -1,0 +1,175 @@
+<article class="help">
+  <h2>Help - Word Generator</h2>
+
+  <p>
+    The word generator is fairly powerful, but with that comes complexity.
+    Here I'll describe how to use it to construct Japanese-like words, which
+    will cover most of the features (all but one, which I'll describe at the
+    end). In case you're unfamiliar, Japanese words are composed, essentially,
+    of [C]V syllables (though n can stand on its own). Let's start there.
+  </p>
+  <h4>Selectors and Output</h4>
+  <p>
+    If you look at a <a href="http://en.wikipedia.org/wiki/Hiragana">Hiragana</a>
+    chart, you'll find it has 5 vowels (a, i, u, e, o) and 14 consonants (k, s, t,
+    n, h, m, y, r, w, g, z, d, b, p). Let's make some <strong>Selector</strong>
+    definitions.
+    <code>Vowel=aiueo
+      Consonant=kstnhmyrwgzdbp
+    </code>
+    Some terminology: each line is a "rule". The left side of the = declares a
+    name, and the right side are the choices to select from. The name doesn't
+    really matter; if you prefer brevity, you could name them V and C, for example.
+  </p>
+  <p>
+    Now, this does not generate any output. If you try this, you'll get a
+    message saying "No output rule." Let's add one.
+    <code>Vowel=aiueo
+      Consonant=kstnhmyrwgzdbp
+      >ConsonantVowel
+    </code>
+    Now if you click Generate, you'll get a bunch of two-letter words, each
+    a consonant followed by a vowel. We can now see what the Selectors are
+    doing: if you refer to one by name, the name will be replaced with one
+    of the characters at random.
+  </p>
+  <h4>Mergers and Repetition</h4>
+  <p>
+    But our words should be more than two letters. How do we achieve this?
+    First, let's define a Syllable.
+    <code>Vowel=aiueo
+      Consonant=kstnhmyrwgzdbp
+      Syllable:ConsonantVowel
+      >Syllable
+    </code>
+    The output is the same as before. Why did we do this? Well, two reasons.
+    1. Introduce <strong>Mergers</strong>. These have names, like the
+    Selectors, but rather than picking one character at random, it merges
+    them all together. In fact, the Output is just a special case, unnamed
+    Merger. 2. By combining them into a named rule, we can repeat the rule
+    in the output.
+    <code>Vowel=aiueo
+      Consonant=kstnhmyrwgzdbp
+      Syllable:ConsonantVowel
+      >Syllable{100,95,90,70,50,30,20,...}
+    </code>
+    The list of numbers in the {braces} represent repetition probabilities.
+    In this case, syllable has a 100% chance of appearing once, then a 95%
+    chance of appearing again, then 90%, 70%, and so on. The ... at the end
+    means "repeat the last probability until failure". If the generator
+    gets to the 8th syllable, it will add more at a 20% chance each time.
+    Strictly speaking, this could repeat forever, but the chances of it are
+    very slim.
+  </p>
+  <h4>Name Resolution</h4>
+  <p>
+    Okay, so we have a generator that will produce CV[CV]*, but Japanese
+    can have syllables with a "y" sound, like "kya". Let's add that. It
+    only applies to the vowels a, u, and o, though. It also only works
+    with some consonants&emdash;"y", "w", and "d" are left out.
+    <code>Vowel=aiueo
+      Consonant=kstnhmyrwgzdbp
+      Syllable:ConsonantVowel
+
+      PVowel=auo
+      PConsonant=kstnhmrgzbp
+      PSyllable:PConsonantyPVowel
+
+      >Syllable{100,95,90,70,50,30,20,...}
+    </code>
+    A few things are noteworthy here. (1) They are named P___ because the
+    adding of the y is known as palatalization. (2) There is not a name
+    conflict, even though the name "PVowel" contains another name inside it;
+    this is because name detection is done with the longest names first.
+    Typically this shouldn't be a problem, but you should be careful with
+    naming to avoid any issues. (3) There's a y in the PSyllable Merger.
+    It's not a name of any other rules, so it's interpreted as the character.
+    (4) We haven't added it to the output.
+  </p>
+  <h4>Adjusting Probabilities</h4>
+  <p>
+    Before we add palatalized syllables to the output, let's also consider
+    that we are missing one syllable case&emdash;a vowel by itself. Let's
+    solve both of these problems at the same time.
+    <code>Vowel=aiueo
+      Consonant=kstnhmyrwgzdbp
+      Syllable:ConsonantVowel
+
+      PVowel=auo
+      PConsonant=kstnhmrgzbp
+      PSyllable:PConsonantyPVowel
+
+      Out=6Syllable4Vowel1PSyllable1
+      >Out{100,95,90,70,50,30,20,...}
+    </code>
+    You can see we've declared a new Selector named Out and are repeating
+    that for the output, rather than Syllable directly. But what are these
+    numbers? By default, all choices in a Selector are equally likely to
+    be chosen. By adding these numbers, we've tweaked the probability.
+  </p>
+  <p>
+    The number immediately after the = is the base probability. If it's
+    missing, it's assumed to be 100. The numbers after each choice are
+    the probabilities for that choice. In this case, Syllable has a 4/6
+    chance, and Vowel and PSyllable each have a 1/6 chance. If any
+    choices were missing probabilities, they'd divide any remaining
+    probability evenly. For example, consider V=a15e15iou. Here we
+    have declared no base probability, so it defaults to 100. a and e
+    each have 15% chance of being selected. The other three choices
+    have no probability declared, so the split the remainder, 70%.
+    Thus, i, o, and u each have a 70%/3 = ~23.3% chance of being
+    selected.
+  </p>
+  <h4>Substitutions</h4>
+  <p>
+    With Japanese, some syllables are actually pronounced and romanized
+    contrary to what might make sense. For example, with T as the initial
+    consonant, you have ta, te, and to, but chi instead of ti and tsu
+    instead of tu. These irregularities can be handled with Substitutions.
+    <code>Vowel=aiueo
+      Consonant=kstnhmyrwgzdbp
+      Syllable:ConsonantVowel
+
+      PVowel=auo
+      PConsonant=kstnhmrgzbp
+      PSyllable:PConsonantyPVowel
+
+      Out=6Syllable4Vowel1PSyllable1
+      >Out{100,95,90,70,50,30,20,...}
+      si~shi
+      hu~fu
+      sy~sh
+      ty~ch
+      ti~chi
+      tu~tsu
+      yi~wi
+      ye~we
+      di~ji
+      du~zu
+      zi~ji
+      oo~ô
+      ou~ô
+      uu~û
+    </code>
+    These rules replace text directly in the output. They'll be run in
+    the order they're declared, so be careful. In this case, for example,
+    note that ty~ch is declared after hu~fu; if they were swapped, it
+    could generate "tyu", get substituted with "chu", then substituted
+    again with "cfu".
+  </p>
+  <h4>Other Things</h4>
+  <p>
+    That's it for the Japanese-style generator. There are a few things I
+    did not touch on in the process. (1) Elements in Mergers can also
+    have probabilities. The numbers in braces are just a special case of
+    this. You could have an optionally included element with, e.g., N:n50.
+    This would produce n half the time, and an empty string the rest.
+    (2) There is another kind of rule, the Mimic. The idea behind it is
+    to simulate the style of a list of words; essentially it works by
+    analyzing what letters tend to follow a given letter, and then
+    weighted-randomly generating words based on that. The syntax is
+    <code>Mime&lt;[this is a list of words]</code>
+    If you then added &gt;Mime, you'd get output like "a", "ords", "isthis",
+    and "wof". It's not perfect, but it could be a useful tool.
+  </p>
+</article>

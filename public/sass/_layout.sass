@@ -1,0 +1,48 @@
+@import colors
+$medium: 767px
+$large: 979px
+$xlarge: 1200px
+
+
+body
+  +container
+  height: 100%
+
+section
+  min-height: 100%
+  h2
+    width: 100%
+  +span(full inside)
+  +breakpoint($medium)
+    +span(last 5 of 8)
+  +breakpoint($large)
+    +pre(1 of 12)
+    +span(7 of 12)
+
+footer
+  position: fixed
+  background: $color
+  color: $background
+  bottom: 0
+  width: 100%
+  margin: 0 auto
+  height: 50px
+  line-height: 50px
+  span:after
+    content: ' | '
+  +breakpoint($medium)
+    +span(1 of 4)
+    &:after
+      content: ''
+      border-bottom: 0px solid transparent
+      border-top: 50px solid transparent
+      border-left: 50px solid $color
+      position: absolute
+      left: 100%
+      width: 0
+      height: 0
+  a
+    color: $accent3
+    text-decoration: none
+    &:hover
+      text-decoration: underline

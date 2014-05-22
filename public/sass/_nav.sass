@@ -1,0 +1,149 @@
+@import compass/css3/transform
+@import colors
+
+// menu fun
+$menu-unit: 50px
+=menu-item($number, $span, $background-color, $angle)
+  position: relative
+  background: $background-color
+  text-align: right
+  padding-right: 20px
+  margin-right: $number * $angle * $menu-unit
+  transition: all .5s
+  &:after
+    content: ''
+    font-size: 0
+    line-height: 0
+    width: 0
+    height: 0
+    border-top: 0px solid transparent
+    border-bottom: $span * $menu-unit solid transparent
+    border-left: $span * $angle * $menu-unit solid $background-color
+    position: absolute
+    top: 0px
+    left: 100%
+    transition: all .5s
+
+header
+  +span(full)
+  margin-bottom: 2em
+  h1
+    height: 100px
+    +span(wide 3 of 4)
+    margin-right: 0
+    background: $color
+    color: $background
+    a
+      font-family: 'Over the Rainbow', cursive
+      line-height: 100px
+      text-decoration: none
+      font-size: 49px
+      color: $background
+    span
+      display: inline-block
+      font-family: 'Over the Rainbow', cursive
+      font-size: 1em
+      +rotate(-10deg)
+      position: absolute
+      top: 9px
+      left: 100px
+      
+  nav
+    >div
+      background: $menu-inactive
+      font-size: 20px
+      //position: absolute
+      //top: 0
+      //right: 0
+      float: left
+      width: span(1 of 4)
+      height: 100px
+      cursor: pointer
+      >a
+        display: block
+        width: 100px
+        +rotate(90deg)
+        color: white
+        text-align: right
+        text-decoration: none
+        padding-right: 0
+        margin: 0 auto
+        &:after
+          content: '\21D2'
+          margin-right: -1em
+    li
+      display: none
+      +span(full)
+      background: $menu-inactive
+      &.active, &:hover
+        background: $menu
+      a
+        display: block
+        width: 100%
+        height: 100%
+        color: $accent3
+        text-decoration: none
+        line-height: $menu-unit
+        font-size: 25px
+        +breakpoint($xlarge)
+          font-size: 30px
+        font-variant: small-caps
+    &.open
+      > div
+        background: $menu
+        a:after
+          content: '\21D0'
+      li
+        display: block
+
+  +susy-breakpoint ($medium, 8)
+    +span(3)
+    h1
+      width: auto
+      float: none
+      display: block
+      +menu-item(1, 2, $color, 1/5)
+      &.active, &:hover
+        +menu-item(0, 2, $color, 1/5)
+      span
+        left: auto
+        right: 30px
+    nav, nav.open
+      clear: both
+      >div
+        display: none
+      li
+        +span(full)
+        display: block
+        float: none
+        width: auto
+        @for $i from 1 to 5
+          &:nth-child(#{$i})
+            +menu-item($i+1, 1, $menu-inactive, 1/5)
+            &.active, &:hover
+              +menu-item($i, 1, $menu, 1/5)
+  +susy-breakpoint ($large, 12)
+    +span(3)
+    h1
+      +menu-item(1, 2, $color, 2/5)
+      &.active, &:hover
+        +menu-item(0, 2, $color, 2/5)
+    nav, nav.open
+      li
+        @for $i from 1 to 5
+          &:nth-child(#{$i})
+            +menu-item($i+1, 1, $menu-inactive, 2/5)
+            &.active, &:hover
+              +menu-item($i, 1, $menu, 2/5)
+  +susy-breakpoint($xlarge, 12)
+    h1
+      +menu-item(1, 2, $color, 1/2)
+      &.active, &:hover
+        +menu-item(0, 2, $color, 1/2)
+    nav, nav.open
+      li
+        @for $i from 1 to 5
+          &:nth-child(#{$i})
+            +menu-item($i+1, 1, $menu-inactive, 1/2)
+            &.active, &:hover
+              +menu-item($i, 1, $menu, 1/2)

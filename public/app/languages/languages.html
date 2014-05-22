@@ -1,0 +1,17 @@
+<article ng-show="loaded" id="language-list">
+  <h2>Languages</h2>
+
+  <div class="search">
+    <input ng-model="searchText" ng-change="search()" placeholder="Search">
+  </div>
+  <div class="pagination">
+    <button ng-click="back()" ng-disabled="firstPage">&lt;</button>
+    Page <input ng-model="page" ng-change="loadPage()"> of {{totalPages}}
+    <button ng-click="forward()" ng-disabled="lastPage">&gt;</button>
+  </div>
+  <div ng-repeat="language in languages" class="language">
+    <h3><a ng-href="#/languages/{{language.url}}">{{language.name}}</a></h3>
+    <span class="creator">Created by <a ng-href="#/people/{{language.creator.display}}">{{language.creator.display}}</a></span>
+    <p class="description">{{language.description}}</p>
+  </div>
+</article>

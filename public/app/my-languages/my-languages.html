@@ -1,0 +1,11 @@
+<article>
+  <h3>My Languages</h3>
+  <button id="newLanguage" ng-click="createLanguage()">Create New Language</button>
+  <div>
+    <ul>
+      <li ng-repeat="language in languages">
+        <a href="#/my/languages/{{language.url}}">{{language.name}}</a>
+      </li>
+    </ul>
+  </div>
+</article>

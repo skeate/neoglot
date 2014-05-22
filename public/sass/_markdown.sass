@@ -1,0 +1,40 @@
+@import colors
+
+.markdown-output
+  h1, h2, h3, h4, h5, h6
+    font-family: "EB Garamond" "Garamond" serif
+    +leader(1)
+  >h1:first-child, >h2:first-child, >h3:first-child, >h4:first-child, >h5:first-child, >h6:first-child
+    +leader(0)
+  h1
+    +adjust-font-size-to(2em)
+    font-variant: small-caps
+  h2
+    +adjust-font-size-to(1.5em)
+  h3
+    +adjust-font-size-to(1.25em)
+  h5
+    +adjust-font-size-to(.83em)
+  h6
+    +adjust-font-size-to(.75em)
+  em
+    font-style: italic
+  strong
+    font-weight: bold
+  p
+    +leader(0)
+  h1 + *, h2+*, h3+*, h4+*, h5+*, h6+*
+    +leader(.5)
+  ol li, ul li, blockquote, pre
+    margin-left: 3em
+    text-indent: 0
+  ol li
+    list-style: decimal inside none
+  ul li
+    list-style: disc inside none
+  blockquote
+    border: 1px dashed gray
+    background-color: #fefefe
+    padding: .25em
+  code
+    font-family: 'Inconsolata' monospace

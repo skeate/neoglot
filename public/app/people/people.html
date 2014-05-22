@@ -1,0 +1,26 @@
+<article ng-show="loaded" id="people-list">
+  <h2>People</h2>
+
+  <div class="search">
+    <input ng-model="searchText" ng-change="search()" placeholder="Search">
+  </div>
+  <div class="pagination">
+    <button ng-click="back()" ng-disabled="firstPage">&lt;</button>
+    Page <input ng-model="page" ng-change="loadPage()"> of {{totalPages}}
+    <button ng-click="forward()" ng-disabled="lastPage">&gt;</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <td>Username</td>
+        <td>Languages created</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in users">
+        <td><a ng-href="#/people/{{user.display}}">{{user.display}}</a></td>
+        <td>{{user.languages.length}}</td>
+      </tr>
+    </tbody>
+  </table>
+</article>

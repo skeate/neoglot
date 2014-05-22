@@ -1,0 +1,21 @@
+<article id="new-language">
+  <h3>New language creation</h3>
+  <form name="newLang">
+    <p>
+      <span>Name:</span>
+      <input type="text" name="name" ng-model="language.name" required ng-change="generateUrl()">
+      <span ng-show="newLang.name.$error.required">Required</span>
+    </p>
+    <p>
+      <span>URL ID <span title="URLs have limited available characters; if your language name has (e.g.) accented characters, you can change this to prettify the URL. This must also be globally unique.">[?]</span>:</span>
+      <input type="text" name="url" ng-model="language.url" ng-change="testUrl()" ng-pattern="uriComponent" required>
+      <span ng-show="newLang.url.$error.required">Required</span>
+      <span ng-show="newLang.url.$error.pattern">Invalid characters found</span>
+    </p>
+    <p>
+      <span>Description:</span>
+      <textarea ng-model="language.description"></textarea>
+    </p>
+    <button ng-click="create()">Create</button>
+  </form>
+</article>

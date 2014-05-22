@@ -1,0 +1,56 @@
+@import colors
+
+#language-list
+  .search
+    +leader
+    input
+      width: 25%
+
+  .language
+    position: relative
+    margin: 1.5em 0
+    padding: .5em
+    box-shadow: 0 0 1em grey
+    .creator
+      position: absolute
+      top: 0
+      right: 0
+      margin: 1em
+    p
+      +leader(.25)
+
+#language-detail
+  h2, h3
+    font-family: "EB Garamond" "Garamond" serif
+  section
+    +span(last 1 of 1)
+    +leader
+  >div:last-child
+    clear: both
+  dl
+    dt
+      font-weight: bold
+      +leader(.5)
+    dd
+      margin-left: 3em
+      .pos
+        font-style: italic
+
+#language-detail, #language-list
+  a
+    text-decoration: none
+    color: $menu
+    &:visited
+      color: $color
+    &:active, &:hover
+      color: $menu-inactive
+  .pagination
+    width: 100%
+    text-align: center
+    input
+      width: 3em
+      text-align: center
+    button:first-child
+      float: left
+    button:last-child
+      float: right

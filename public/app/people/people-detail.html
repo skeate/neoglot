@@ -1,0 +1,13 @@
+<article ng-show="loaded" id="people-detail">
+  <h2>{{user.display}}</h2>
+
+  <div class="markdown-output" marked="user.about"></div>
+  <div class="languages">
+    <h4>Languages</h4>
+    <ul>
+      <li ng-repeat="language in user.languages">
+        <a ng-href="#/languages/{{language.url}}">{{language.name}}</a>
+      </li>
+    </ul>
+  </div>
+</article>
