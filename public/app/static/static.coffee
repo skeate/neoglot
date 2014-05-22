@@ -6,7 +6,7 @@ angular.module 'neoglotApp'
       .when '/about',
         templateUrl: 'app/static/about.html'
         controller: 'StaticCtrl'
-      .when '/help/wordgen',
+      .when '/help/generator',
         templateUrl: 'app/static/help.html'
         controller: 'StaticCtrl'
   .controller 'StaticCtrl', ($scope, $routeParams) ->
