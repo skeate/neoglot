@@ -5,3 +5,4 @@ public/stylesheets/
 .tmp/
 coverage/
 dist/
+config/environments/production.js
