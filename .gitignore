@@ -4,4 +4,4 @@ public/bower_components/
 public/stylesheets/
 .tmp/
 coverage/
-
+dist/
