@@ -7,7 +7,7 @@
       <span ng-show="newLang.name.$error.required">Required</span>
     </p>
     <p>
-      <span>URL-friendly name <span title="URLs have limited available characters; if your language name has (e.g.) accented characters, you can change this to prettify the URL.">[?]</span>:</span>
+      <span>URL ID <span title="URLs have limited available characters; if your language name has (e.g.) accented characters, you can change this to prettify the URL. This must also be globally unique.">[?]</span>:</span>
       <input type="text" name="url" ng-model="language.url" ng-change="testUrl()" ng-pattern="uriComponent" required>
       <span ng-show="newLang.url.$error.required">Required</span>
       <span ng-show="newLang.url.$error.pattern">Invalid characters found</span>

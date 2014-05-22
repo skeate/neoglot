@@ -1,0 +1,24 @@
+.my-profile
+  textarea
+    width: 100%
+    height: 20em
+  .markdown-output
+    margin-top: 2em
+
+#people-list
+  .search
+    margin-top: 1em
+  table
+    width: 100%
+    thead td
+      font-weight: bold
+    td:last-child
+      text-align: right
+
+#people-detail
+  div
+    width: 100%
+    +leader()
+    clear: both
+  h4
+    +adjust-font-size-to(1.25em)

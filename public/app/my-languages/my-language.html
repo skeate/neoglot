@@ -1,8 +1,8 @@
-<article id="language-editor">
+<article ng-show="loaded" id="language-editor">
   <form>
     <h3>{{language.name}}</h3>
     <div>
-      <a ng-href="#/languages/{{language.creator}}/{{language.url}}">View language page</a>
+      <a ng-href="#/languages/{{language.url}}">View language page</a>
     </div>
     <div>
       <ul id="language-editor-tabs">
@@ -17,14 +17,104 @@
             <textarea ng-model="language.description"></textarea>
           </div>
         </p>
+        <button ng-click="saveDetails()">Save</button>
       </div>
       <div id="lexicon">
-        lexicon editor
+        <div class="list">
+          <input type="text" ng-model="searchText" ng-change="search()" placeholder="Search">
+          <select size="20"
+                  ng-change="loadWord()"
+                  ng-model="selectedWord"
+                  ng-options="(word.definitions.length?'':'*')+word.word for word in lexicon">
+            <option value="">-- Lexicon --</option>
+          </select>
+          <button class="changePage" ng-click="loadWordPage(currentPage-1)" ng-disabled="firstPage">&lt;</button>
+          <button class="newWord" ng-click="addNewWord()">New Word</button>
+          <button class="changePage" ng-click="loadWordPage(currentPage+1)" ng-disabled="lastPage">&gt;</button>
+        </div>
+        <div class="detail">
+          <div ng-hide="selectedWord">
+            <p>
+              Select a word on the left to edit it, or add a new word using the "New Word"
+              button or the generator below. <a href="#/help/generator">See here</a> for help using
+              the generator.
+            </p>
+            <p>
+              Words beginning with an asterisk * are those without any definitions
+              (e.g., if you add a generated word).  You can also search for these
+              words by starting your search with an asterisk.
+            </p>
+          </div>
+          <div ng-show="selectedWord">
+            <div>Word: <input ng-model="selectedWord.word"></div>
+            <fieldset ng-repeat="definition in selectedWord.definitions">
+              <button ng-click="deleteDefinition($index)">-</button>
+              <div>Part of Speech: <input ng-model="definition.pos"></div>
+              <div><textarea ng-model="definition.definition">Definition</textarea></div>
+            </fieldset>
+            <div>
+              <button ng-click="addDefinition()">+</button>
+            </div>
+            <div>
+              <button ng-click="saveWord()">Save</button>
+              <button ng-click="deleteWord()">Delete</button>
+            </div>
+          </div>
+          <div class="error" ng-show="error">
+            {{error}}
+          </div>
+        </div>
+        <div class="extra generator">
+          <hr>
+          <h3>Generator</h3>
+          <div id="generator-input">
+            <textarea ng-model="generatorRules"></textarea>
+            <button ng-click="generateWords()">Generate</button>
+          </div>
+          <div id="generator-output" ng-model="generatorOutput">
+            <span ng-show="generatorError">{{generatorError}}</span>
+            <ul>
+              <li ng-repeat="word in generatorOutput track by $index">
+                <button ng-click="saveWord(word)">+{{word}}</button>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div id="pages">
-        markdown page list
+        <div class="list">
+          <select size="15" ng-change="loadPage()"
+                            ng-model="selectedPage"
+                            ng-options="page.name for page in pages">
+            <option value="">-- Page List--</option>
+          </select>
+          <button ng-click="addNewPage()">New Page</button>
+          <button ng-click="deletePage()" ng-disabled="!selectedPage||selectedPage.name=='Overview'">Delete</button>
+        </div>
+        <div class="detail">
+          <div ng-hide="selectedPage">
+            <p>
+              Select a page on the left to edit it, or add a new page using the "New Page"
+              button or the generator below.
+            </p>
+            <p>
+              The Overview page will be displayed on your language's main page. It cannot
+              be deleted.
+            </p>
+            <p>
+              Some suggestions for other pages: Alphabet, Grammar, Example Sentences
+            </p>
+          </div>
+          <div ng-show="selectedPage">
+            Enter page content here. Format with <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>.
+            Rendered output can be seen below.
+            <textarea ng-model="pagecontent"></textarea>
+            <button ng-click="savePage($event)">Save</button>
+          </div>
+        </div>
+        <div marked="pagecontent" class="extra markdown-output">
+        </div>
       </div>
-      <button ng-click="save()">Save</button>
     </div>
   </form>
 </article>

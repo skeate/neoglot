@@ -1,0 +1,31 @@
+<article ng-show="loaded" id="language-detail">
+  <h2>{{language.name}}</h2>
+  <h3>by <a ng-href="#/people/{{language.creator.display}}">{{language.creator.display}}</a></h3>
+
+  Page:
+  <select ng-change="loadPage()"
+          ng-model="selectedPage"
+          ng-options="page.name for page in pages">
+    <option value="">Lexicon</option>
+  </select>
+
+  <section class="markdown-output" marked="page" ng-show="selectedPage"></section>
+  <section class="lexicon" ng-hide="selectedPage">
+    <div>{{wordCount}} total words.</div>
+    <div class="pagination">
+      <button ng-click="back()" ng-disabled="firstPage">&lt;</button>
+      Page <input ng-model="lexiconPage" ng-change="loadLexiconPage()"> of {{totalPages}}
+      <button ng-click="forward()" ng-disabled="lastPage">&gt;</button>
+    </div>
+    <dl>
+      <div ng-repeat="entry in lexicon">
+        <dt>{{entry.word}}</dt>
+        <dd ng-repeat="definition in entry.definitions">
+          <span class="pos">{{definition.pos}}: </span>
+          <span class="def">{{definition.definition}}</span>
+        </dd>
+      </div>
+    </dl>
+  </section>
+  <div></div>
+</article>

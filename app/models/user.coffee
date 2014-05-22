@@ -15,6 +15,11 @@ UserSchema = new Schema
     type: String
     default: ''
     unique: true
+  languages: [
+    type: Schema.Types.ObjectId
+    ref: 'Language'
+  ]
+  about: String
 
 UserSchema.plugin uniqueValidator,
   message: '{PATH} already in use.'
@@ -42,12 +47,6 @@ UserSchema.path('email')
     (value) ->
       value.length and /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test value
     , 'Valid email required'
-
-UserSchema.pre 'save', (next) ->
-  if @password and @password.length
-    next()
-  else
-    next new Error 'Invalid password'
 
 UserSchema.methods =
   authenticate: (plainText) ->

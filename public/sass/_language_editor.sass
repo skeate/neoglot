@@ -18,7 +18,7 @@
       padding-bottom: 1px
       text-align: center
       text-indent: 0
-      width: 10em
+      width: 20%
       background: $background
       &.selected
         border-bottom-color: lighten($background, 5%)
@@ -37,3 +37,59 @@
     //z-index: 1
   form > div > ul + div
     display: block
+
+  .list
+    +span(2 of 5)
+    text-align: center
+    select
+      height: 15em
+      width: 100%
+    input
+      box-sizing: border-box
+      width: 100%
+    button
+      display: block
+      float: left
+    button.changePage
+      width: 15%
+    button.newWord
+      width: 70%
+  .detail
+    +span(last 3 of 5)
+    +box-sizing(border-box)
+    p:first-child
+      +leader(0)
+    fieldset
+      position: relative
+      padding-left: 3em
+      button
+        position: absolute
+        left: 0
+        top: 0
+      textarea
+        width: 100%
+        height: auto
+      + div
+        clear: both
+    textarea
+      width: 100%
+      height: 16em
+  .extra
+    clear: both
+    &:after
+      content: ''
+      clear: both
+      display: block
+
+  #generator-input
+    +span(1 of 2)
+    textarea
+      width: 100%
+      height: 20em
+  #generator-output
+    +span(last 1 of 2)
+    li
+      list-style-type: none
+      float: left
+      margin-left: 0
+      text-indent: 0

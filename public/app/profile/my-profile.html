@@ -1,3 +1,13 @@
-<p>my profile</p>
-
-<p><button ng-click="logout()">Logout</button></p>
+<article class="my-profile">
+  <h2>My Profile</h2>
+  <div>
+    <button ng-click="logout()">Logout</button>
+  </div>
+  <div>
+    <p>Display Name: {{user.display}}</p>
+    <div>About (markdown allowed, rendered below):</div>
+    <div><textarea ng-model="user.about"></textarea></div>
+    <button ng-click="save()">Save</button>
+    <div marked="user.about" class="markdown-output"></div>
+  </div>
+</article>

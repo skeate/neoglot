@@ -3,23 +3,29 @@ Schema = mongoose.Schema
 uniqueValidator = require 'mongoose-unique-validator'
 
 LanguageSchema = new Schema
+  url:
+    type: String
+    unique: true
   name: String
-  url: String
-  creator: String
+  creator: 
+    type: Schema.Types.ObjectId
+    index: true
+    ref: 'User'
   description:
     type: String
     default: "No description given"
+  #lexicon: [
+    #type: Schema.Types.ObjectId
+    #ref: 'Word'
+  #]
+
+LanguageSchema.plugin uniqueValidator,
+  message: '{PATH} already in use.'
 
 LanguageSchema.path('name')
   .validate \
     (value) ->
       value.length
     , 'Language name required'
-
-LanguageSchema.path('url')
-  .validate \
-    (value) ->
-      value.length
-    , 'Language URL-friendly name required'
 
 mongoose.model 'Language', LanguageSchema

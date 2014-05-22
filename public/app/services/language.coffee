@@ -2,10 +2,15 @@
 
 angular.module 'neoglotApp'
   .factory 'Languages', ($resource) ->
-    $resource 'api/languages/:creator/:language', {},
-      query:
+    $resource 'api/languages/:language/:searchkey/:search/:start/:count', {},
+      list:
         method: 'GET'
-        isArray: true
+      read:
+        method: 'GET'
+      search:
+        method: 'GET'
+        params:
+          searchkey: 'search'
   .factory 'MyLanguages', ($resource) ->
     $resource 'api/mylanguages/:language', {},
       query:

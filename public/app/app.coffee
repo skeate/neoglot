@@ -4,6 +4,7 @@ angular.module 'neoglotApp', [
     'ngResource'
     'ngRoute'
     'chieffancypants.loadingBar'
+    'hc.marked'
   ]
   .service 'AuthService', ($q, $timeout, $http, $location, $rootScope) ->
     checkLoggedIn: ->
@@ -36,14 +37,6 @@ angular.module 'neoglotApp', [
       .when '/',
         templateUrl: 'app/main/main.html'
         controller: 'MainCtrl'
-      .when '/my/profile',
-        templateUrl: 'app/profile/my-profile.html'
-        controller: 'ProfileCtrl'
-        resolve:
-          loggedIn: (AuthService) -> AuthService.checkLoggedIn()
-      .when '/people',
-        templateUrl: 'app/people/people.html'
-        controller: 'PeopleCtrl'
       .when '/login',
         templateUrl: 'app/login/login.html'
         controller: 'LoginCtrl'
@@ -52,5 +45,3 @@ angular.module 'neoglotApp', [
           logout: (AuthService) -> AuthService.logout()
       .otherwise
         templateUrl: 'app/404/404.html'
-
-    #$locationProvider.html5Mode true
