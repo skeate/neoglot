@@ -12,7 +12,11 @@ angular.module 'neoglotApp'
     People.get user:0, (data) ->
       $scope.user = data
       $scope.save = ->
-        People.update {}, $scope.user
+        $scope.saving = true
+        $scope.saved = false
+        People.update {}, $scope.user, ->
+          $scope.saving = false
+          $scope.saved = true
     $scope.logout = ->
       $http
         .post '/logout'
