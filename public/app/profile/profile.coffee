@@ -7,14 +7,15 @@ angular.module 'neoglotApp'
         templateUrl: 'app/profile/my-profile.html'
         controller: 'ProfileCtrl'
         resolve:
-          loggedIn: (AuthService) -> AuthService.checkLoggedIn()
+          loggedIn: ["AuthService", (AuthService) -> AuthService.checkLoggedIn()]
   .controller 'ProfileCtrl', ($scope, $routeParams, $http, $location, People) ->
-    $scope.user = People.get user:0
+    People.get user:0, (data) ->
+      $scope.user = data
+      $scope.save = ->
+        People.update {}, $scope.user
     $scope.logout = ->
       $http
         .post '/logout'
         .success (data, status, headers, config) ->
           $location.url '/'
-    $scope.save = ->
-      People.update $scope.user
 

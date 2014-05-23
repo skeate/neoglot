@@ -3,7 +3,6 @@ var express = require('express'),
     mongoose = require('mongoose');
 
 
-mongoose.connect('mongodb://localhost/neoglot');
 
 module.exports = function (app, passport) {
     app.configure('development', function () {
@@ -11,6 +10,7 @@ module.exports = function (app, passport) {
             return next();
         });
 
+        mongoose.connect('mongodb://localhost/neoglot');
         app.set('port', process.env.PORT || 9000);
         app.set('views', path.join(app.directory, '/app'));
         app.engine('html', require('ejs').renderFile);

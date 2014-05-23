@@ -7,17 +7,17 @@ angular.module 'neoglotApp'
         templateUrl: 'app/my-languages/my-languages.html'
         controller: 'MyLanguageCtrl'
         resolve:
-          loggedIn: (AuthService) -> AuthService.checkLoggedIn()
+          loggedIn: ["AuthService", (AuthService) -> AuthService.checkLoggedIn()]
       .when '/my/languages/new',
         templateUrl: 'app/my-languages/my-new-language.html'
         controller: 'MyNewLanguageCtrl'
         resolve:
-          loggedIn: (AuthService) -> AuthService.checkLoggedIn()
+          loggedIn: ["AuthService", (AuthService) -> AuthService.checkLoggedIn()]
       .when '/my/languages/:language',
         templateUrl: 'app/my-languages/my-language.html'
         controller: 'MyLanguageDetailCtrl'
         resolve:
-          loggedIn: (AuthService) -> AuthService.checkLoggedIn()
+          loggedIn: ["AuthService", (AuthService) -> AuthService.checkLoggedIn()]
 
   .controller 'MyLanguageCtrl', ($scope, $location, $rootScope, MyLanguages) ->
     $scope.languages = MyLanguages.query()
