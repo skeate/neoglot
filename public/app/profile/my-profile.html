@@ -6,7 +6,7 @@
   <div>
     <p>Display Name: {{user.display}}</p>
     <div>About (markdown allowed, rendered below):</div>
-    <div><textarea ng-model="user.about"></textarea></div>
+    <div><textarea maxlength="2000" ng-model="user.about"></textarea></div>
     <button ng-click="save()">Save</button>
     <div marked="user.about" class="markdown-output"></div>
   </div>

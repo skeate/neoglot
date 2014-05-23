@@ -27,12 +27,13 @@ angular.module 'neoglotApp', [
           $timeout deferred.resolve, 0
 
   .config ($routeProvider, $locationProvider, $httpProvider) ->
-    $httpProvider.interceptors.push ($q, $location) ->
+    $httpProvider.interceptors.push ["$q","$location", ($q, $location) ->
       response: (res) -> res
       responseError: (res) ->
         if res.status == 401
           $location.url '/login'
         $q.reject res
+    ]
     $routeProvider
       .when '/',
         templateUrl: 'app/main/main.html'

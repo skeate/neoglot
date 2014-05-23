@@ -1,3 +1,4 @@
+require('coffee-script/register');
 var express = require('express'),
     passport = require('passport'),
     fs = require('fs'),
