@@ -2,19 +2,26 @@
   <h3>New language creation</h3>
   <form name="newLang">
     <p>
-      <span>Name:</span>
+      <span class="textlabel">Name:</span>
       <input type="text" name="name" ng-model="language.name" required ng-change="generateUrl()">
-      <span ng-show="newLang.name.$error.required">Required</span>
+      <span class="error" ng-show="newLang.name.$error.required">Required</span>
     </p>
     <p>
-      <span>URL ID <span title="URLs have limited available characters; if your language name has (e.g.) accented characters, you can change this to prettify the URL. This must also be globally unique.">[?]</span>:</span>
-      <input type="text" name="url" ng-model="language.url" ng-change="testUrl()" ng-pattern="uriComponent" required>
-      <span ng-show="newLang.url.$error.required">Required</span>
-      <span ng-show="newLang.url.$error.pattern">Invalid characters found</span>
+      <span class="textlabel">Simple name:</span>
+      <input type="text" name="url" ng-model="language.url" ng-pattern="alpha" simplify="language.name" required>
+      <span class="error" ng-show="newLang.url.$error.required">Required</span>
+      <span class="error" ng-show="newLang.url.$error.pattern">Invalid characters found</span>
+      <div class="explanation">
+        The simple name should be basic text (no accents, ligatures, or other special characters).
+        We'll automatically strip any accents and convert ligatures to their component parts,
+        but you might have to set this manually if it's more complex.
+      </div>
     </p>
     <p>
-      <span>Description:</span>
-      <textarea ng-model="language.description"></textarea>
+      <span>Description (appears in language listing, 200 character limit):</span>
+      <div>
+        <textarea ng-model="language.description" maxlength="200"></textarea>
+      </div>
     </p>
     <button ng-click="create()">Create</button>
   </form>

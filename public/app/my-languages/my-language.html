@@ -1,23 +1,40 @@
 <article ng-show="loaded" id="language-editor">
-  <form>
     <h3>{{language.name}}</h3>
     <div>
       <a ng-href="#/languages/{{language.url}}">View language page</a>
     </div>
-    <div>
+    <div class="tabs">
       <ul id="language-editor-tabs">
         <li class="selected"><a href="#details">Details</a></li>
         <li><a href="#lexicon">Lexicon</a></li>
         <li><a href="#pages">Pages</a></li>
       </ul>
       <div id="details">
-        <p>
-          Description
+        <form name="langDetails">
           <div>
-            <textarea ng-model="language.description"></textarea>
+            <span class="textlabel">Name:</span>
+            <input name="name" ng-model="language.name" required>
+            <span class="error" ng-show="langDetails.name.$error.required">Required</span>
           </div>
-        </p>
-        <button ng-click="saveDetails()">Save</button>
+          <div>
+            <span class="textlabel">Simple name:</span>
+            <input type="text" name="url" ng-model="language.url" simplify="language.name" ng-pattern="alpha" required>
+            <span class="error" ng-show="langDetails.url.$error.required">Required</span>
+            <span class="error" ng-show="langDetails.url.$error.pattern">Invalid characters found</span>
+            <div class="explanation">
+              The simple name should be basic text (no accents, ligatures, or other special characters).
+              We'll automatically strip any accents and convert ligatures to their component parts,
+              but you might have to set this manually if it's more complex.
+            </div>
+          </div>
+          <div>
+            <span>Description (appears in language listing, 200 character limit):</span>
+            <div>
+              <textarea ng-model="language.description"></textarea>
+            </div>
+          </div>
+          <button ng-click="saveDetails()">Save</button>
+        </form>
       </div>
       <div id="lexicon">
         <div class="list">
