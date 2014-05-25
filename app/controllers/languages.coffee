@@ -10,6 +10,8 @@ module.exports = (app) ->
   create: (req, res) ->
     if req.body.description.length > 1000
       res.send 400, error: "Description is too long."
+    else if !/^[A-Za-z ]+$/.test req.body.url
+      res.send 400, error: "Invalid simple name"
     else
       language = new Language req.body
       language.creator = req.user._id
