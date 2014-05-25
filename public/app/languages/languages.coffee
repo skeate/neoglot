@@ -60,7 +60,10 @@ angular.module 'neoglotApp'
       $scope.loadPage()
     $scope.loadPage = ->
       if $scope.selectedPage
-        $location.url '/languages/'+$routeParams.language+'/'+$scope.selectedPage.name
+        if $scope.selectedPage.name == "Overview"
+          $location.url '/languages/'+$routeParams.language
+        else
+          $location.url '/languages/'+$routeParams.language+'/'+$scope.selectedPage.name
         Pages.get language: $routeParams.language, page: $scope.selectedPage.name, (page) ->
           $scope.page = page.data
       else #lexicon
