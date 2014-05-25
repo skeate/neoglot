@@ -42,6 +42,7 @@ angular.module 'neoglotApp'
           .removeClass 'selected'
 
     # Details tab
+    $scope.alpha = /^[A-Za-z ]*$/
     $scope.detailsLoaded = false
     $scope.language = MyLanguages.get language:language, (data)->
       $scope.loaded = true
@@ -149,6 +150,7 @@ angular.module 'neoglotApp'
 
 
   .controller 'MyNewLanguageCtrl', ($scope, $http, $location) ->
+    $scope.alpha = /^[A-Za-z ]*$/
     $scope.create = ->
       if $scope.newLang.$valid
         $http.post '/api/languages', $scope.language
