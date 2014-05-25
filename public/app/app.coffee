@@ -26,7 +26,7 @@ angular.module 'neoglotApp', [
         .success ->
           $timeout deferred.resolve, 0
 
-  .config ($routeProvider, $locationProvider, $httpProvider) ->
+  .config ($routeProvider, $locationProvider, $httpProvider, markedProvider) ->
     $httpProvider.interceptors.push ["$q","$location", ($q, $location) ->
       response: (res) -> res
       responseError: (res) ->
@@ -46,3 +46,5 @@ angular.module 'neoglotApp', [
           logout: (AuthService) -> AuthService.logout()
       .otherwise
         templateUrl: 'app/404/404.html'
+    markedProvider.setOptions
+      sanitize: true

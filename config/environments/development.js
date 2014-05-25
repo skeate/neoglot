@@ -16,7 +16,7 @@ module.exports = function (app, passport) {
         app.engine('html', require('ejs').renderFile);
         app.set('view engine', 'html');
         app.set('git base', 'A:\\neoglot_testing\\');
-        app.use(express.favicon());
+        app.use(express.favicon("favicon.ico"));
         app.use(express.logger('dev'));
         app.use(express.bodyParser());
         app.use(express.methodOverride());

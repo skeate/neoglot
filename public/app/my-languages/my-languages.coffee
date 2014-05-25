@@ -42,6 +42,7 @@ angular.module 'neoglotApp'
           .removeClass 'selected'
 
     # Details tab
+    $scope.alpha = /^[A-Za-z ]*$/
     $scope.detailsLoaded = false
     $scope.language = MyLanguages.get language:language, (data)->
       $scope.loaded = true
@@ -149,11 +150,51 @@ angular.module 'neoglotApp'
 
 
   .controller 'MyNewLanguageCtrl', ($scope, $http, $location) ->
-    $scope.uriComponent = /^([-A-Za-z0-9_!~'*()]|%[0-9A-Fa-f]{2})*$/
-    $scope.generateUrl = ->
-      $scope.language.url = encodeURIComponent $scope.language.name || ""
+    $scope.alpha = /^[A-Za-z ]*$/
     $scope.create = ->
       if $scope.newLang.$valid
         $http.post '/api/languages', $scope.language
           .success ->
             $location.url '/my/languages'
+  .directive 'simplify', ->
+    restrict: 'A'
+    require: '?ngModel'
+    link: (scope, element, attrs, ngModel) ->
+      if !ngModel? then return
+      target = attrs.simplify
+      replacements =
+        'a': 'áàâäãå'
+        'A': 'ÁÀÂÄÃÅ'
+        'e': 'éèêë'
+        'E': 'ÉÈÊË'
+        'i': 'íìîï'
+        'I': 'ÍÌÎÏ'
+        'o': 'óòôöõø'
+        'O': 'ÓÒÔÖÕØ'
+        'u': 'úùûüů'
+        'U': 'ÚÙÛÜŮ'
+        'ae': 'æ'
+        'AE': 'Æ'
+        'oe': 'œ'
+        'OE': 'Œ'
+        'dh': 'ð'
+        'Dh': 'Ð'
+        'th': 'þ'
+        'Th': 'Þ'
+        'ss': 'ß'
+        'n': 'ñ'
+        'N': 'Ñ'
+        'c': 'ç'
+        'C': 'Ç'
+      scope.$watch attrs.simplify, (value) ->
+        if value
+          for rep, orig of replacements
+            search = new RegExp '['+orig+']', 'g'
+            value = value.replace search, rep
+        else
+          value = ''
+        #$parse(attrs.ngModel).assign value
+        nonAlpha = new RegExp '[^A-Za-z ]', 'g'
+        value = value.replace nonAlpha, ''
+        ngModel.$setViewValue value
+        ngModel.$render()

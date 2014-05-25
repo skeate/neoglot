@@ -6,7 +6,7 @@
     width: 100%
   h3 + div
     margin-bottom: 1em
-  form > div > ul
+  .tabs > ul
     li
       position: relative
       top: 1px
@@ -30,12 +30,12 @@
         +adjust-font-size-to(14pt)
         display: block
         width: 100%
-  form > div > div
+  .tabs > div
     border: 1px solid $color
     display: none
     padding: .5em
     //z-index: 1
-  form > div > ul + div
+  .tabs > ul + div
     display: block
 
   .list
@@ -93,3 +93,21 @@
       float: left
       margin-left: 0
       text-indent: 0
+
+#new-language, #details
+  textarea
+    width: 50%
+  .explanation
+    margin-left: 3em
+    +adjust-font-size-to(.9em)
+    font-style: italic
+    width: 50%
+  span
+    &.error
+      color: red
+      width: auto
+    &.textlabel
+      width: 8em
+      display: inline-block
+  input.ng-invalid
+    background-color: #FFCCCC
