@@ -24,7 +24,7 @@ angular.module 'neoglotApp'
     $scope.createLanguage = ->
       $location.url '/my/languages/new'
 
-  .controller 'MyLanguageDetailCtrl', ($scope, $routeParams, MyLanguages, Words, Pages, WordGenerator) ->
+  .controller 'MyLanguageDetailCtrl', ($scope, $location, $routeParams, MyLanguages, Words, Pages, WordGenerator) ->
     language = $routeParams.language
     languageID = null
     # set up tabs
@@ -48,7 +48,9 @@ angular.module 'neoglotApp'
       $scope.loaded = true
       languageID = data._id
     $scope.saveDetails = ->
-      MyLanguages.update language: language, $scope.language
+      MyLanguages.update language: language, $scope.language, ->
+        if language != $scope.language.url
+          $location.url '/my/languages/'+$scope.language.url
 
     # Lexicon tab
     $scope.currentPage = 0
@@ -186,15 +188,15 @@ angular.module 'neoglotApp'
         'N': 'Ñ'
         'c': 'ç'
         'C': 'Ç'
-      scope.$watch attrs.simplify, (value) ->
-        if value
-          for rep, orig of replacements
-            search = new RegExp '['+orig+']', 'g'
-            value = value.replace search, rep
-        else
-          value = ''
-        #$parse(attrs.ngModel).assign value
-        nonAlpha = new RegExp '[^A-Za-z ]', 'g'
-        value = value.replace nonAlpha, ''
-        ngModel.$setViewValue value
-        ngModel.$render()
+      scope.$watch attrs.simplify, (value, oldVal) ->
+        if oldVal?
+          if value
+            for rep, orig of replacements
+              search = new RegExp '['+orig+']', 'g'
+              value = value.replace search, rep
+          else
+            value = ''
+          nonAlpha = new RegExp '[^A-Za-z ]', 'g'
+          value = value.replace nonAlpha, ''
+          ngModel.$setViewValue value
+          ngModel.$render()

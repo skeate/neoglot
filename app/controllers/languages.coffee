@@ -96,9 +96,19 @@ module.exports = (app) ->
         url: req.params.language
         creator: req.user._id
       delete req.body._id
-      Language.findOneAndUpdate query, req.body, select: 'name url description', (err, lang) ->
-        if err then res.send 500, err
-        else if !lang? then res.send 401, error: "No matching language found or user lacks permissions."
-        else res.send 200, lang
+      updateLang = ->
+        Language.findOneAndUpdate query, req.body, select: 'name url description', (err, lang) ->
+          if err then res.send 500, err
+          else if !lang? then res.send 401, error: "No matching language found or user lacks permissions."
+          else res.send 200, lang
+      if req.params.language != req.body.url
+        Language.findOne url: req.body.url, (err, lang) ->
+          if lang? then res.send 400, error: "Simple name already in use."
+          else
+            # changed url/simple name, need to rename git repo
+            langdir = path.join app.get('git base'), req.user.display, req.params.language
+            newlangdir = path.join app.get('git base'), req.user.display, req.body.url
+            fs.rename langdir, newlangdir, updateLang
+      else updateLang()
   delete: (req, res) ->
     res.send "deleting language"
